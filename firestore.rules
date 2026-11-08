@@ -90,5 +90,38 @@ service cloud.firestore {
           || (request.resource.data.status == 'unlocked'
             && get(/databases/$(db)/documents/settings/app).data.instantUnlock == true));
     }
+
+    // WhatsApp phone verification (works before sign-up). Doc id = phone digits.
+    function otpSecret(p) { return get(/databases/$(db)/documents/otpSecrets/$(p)).data; }
+    match /otpSecrets/{p} { allow read, write: if isAdmin(); }
+    match /otpPool/{id} { allow read, write: if isAdmin(); }
+    match /otpRequests/{p} {
+      allow get: if true;
+      allow list, delete: if isAdmin();
+      // New request (or fresh request after expiry): pending, no attempts, no code assigned.
+      allow create: if newOtpRequest(p);
+      allow update: if isAdmin() || (resource.data.status != 'verified' && newOtpRequest(p))
+        || (resource.data.status == 'sent'
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['guess', 'attempts', 'status'])
+          && request.resource.data.attempts == resource.data.attempts + 1
+          && request.resource.data.attempts <= 5
+          && request.resource.data.guess is string
+          && (request.resource.data.status == 'sent'
+            || (request.resource.data.status == 'verified' && request.resource.data.guess == otpSecret(p).code)));
+    }
+    function newOtpRequest(p) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['phone', 'status', 'attempts', 'createdAt']) && d.status == 'pending' && d.attempts == 0
+        && d.createdAt == request.time && d.phone is string && d.phone.replace('[^0-9]', '') == p && p.size() >= 10 && p.size() <= 15;
+    }
+    match /verifiedPhones/{p} {
+      allow get: if true;
+      allow list, delete: if isAdmin();
+      allow create: if exists(/databases/$(db)/documents/otpSecrets/$(p))
+        && request.resource.data.code == otpSecret(p).code
+        && request.time < otpSecret(p).sentAt + duration.value(15, 'm')
+        && getAfter(/databases/$(db)/documents/otpRequests/$(p)).data.status == 'verified'
+        && getAfter(/databases/$(db)/documents/otpRequests/$(p)).data.guess == request.resource.data.code;
+    }
   }
 }

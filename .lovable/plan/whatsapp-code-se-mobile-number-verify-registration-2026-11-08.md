@@ -1,12 +1,14 @@
 # WhatsApp code se mobile number verify (Registration)
 
 ## User ko kya dikhega
+
 1. Registration form mein mobile number ke saath **"Verify"** button.
-2. Click karne par message: "Admin aap ko WhatsApp par code bhejega" aur ek **code wala box**.
+2. Click karne par message: "Check your WhatsApp and enter 6 digit code" aur ek **code wala box**.
 3. User code likh kar **"Confirm"** dabaye. Sahi code par number ke saath green tick "Verified" aa jaye. Ghalat code par "Code ghalat hai" dikhe.
 4. Registration tab tak complete nahi hogi jab tak number verified na ho.
 
 ## Admin ko kya dikhega (Admin panel mein naya "Phone Verification" hissa)
+
 - **WhatsApp number**: admin apna number yahan set kare. User ko bataya jaye ke code is number se aayega.
 - **100 codes ki list**: "Generate 100 codes" button (6 digit random), list dekh sakte hain, purane/used codes ki ginti, dobara generate kar sakte hain.
 - **Pending requests**: har request mein user ka number aur waqt. **"Send code"** dabane par:
@@ -16,12 +18,14 @@
 - Verified / expired requests ki history.
 
 ## Rules
+
 - Code 15 minute tak valid. Uske baad user dobara "Verify" dabaye.
 - Ek code sirf ek dafa use ho; use hone ke baad list mein "used" ho jaye.
 - 5 ghalat koshishon ke baad request band; nayi request karni hogi.
-- Code user ke phone/browser ko kabhi nazar nahi aata — sirf WhatsApp se milta hai. Firebase khud check karta hai ke likha hua code sahi hai.
+- Code user ke phone/browser ko  kabhi nazar nahi aata — sirf WhatsApp se milta hai. Firebase khud check karta hai ke likha hua code sahi hai.
 
 ## Technical details
+
 - Firestore collections:
   - `settings` mein `otpWhatsapp` (admin number).
   - `otpPool/main` { codes: [{code, used}] } — sirf admin read/write.
