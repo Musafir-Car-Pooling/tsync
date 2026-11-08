@@ -4,7 +4,7 @@ import { cloud } from "./cloud";
 export const OTP_TTL_MS = 15 * 60 * 1000;
 export const OTP_MAX_ATTEMPTS = 5;
 export type OtpCode = { code: string; used: boolean };
-export type OtpRequest = { id: string; phone: string; status: "pending" | "sent" | "verified"; createdAt?: number; sentAt?: number; attempts: number };
+export type OtpRequest = { id: string; phone: string; status: "pending" | "sent" | "verified"; createdAt?: number | undefined; sentAt?: number | undefined; attempts: number };
 
 /** "0300-1234567" -> "03001234567" (doc id). */
 export const phoneKey = (phone: string) => phone.replace(/\D/g, "");
@@ -18,7 +18,7 @@ export function generateCodes(n = 100, rand = Math.random): OtpCode[] {
 }
 export function pickCode(codes: OtpCode[], rand = Math.random): string | undefined {
   const free = codes.filter((c) => !c.used);
-  return free.length ? free[Math.floor(rand() * free.length)].code : undefined;
+  return free.length ? free[Math.floor(rand() * free.length)]?.code : undefined;
 }
 export const markUsed = (codes: OtpCode[], code: string) => codes.map((c) => (c.code === code ? { ...c, used: true } : c));
 export const otpExpired = (sentAt: number | undefined, now = Date.now()) => !sentAt || now - sentAt > OTP_TTL_MS;
