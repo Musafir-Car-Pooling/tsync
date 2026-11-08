@@ -29,7 +29,7 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 
-- Firestore is the source of truth; src/lib/store.ts is the in-memory view and src/lib/cloud.ts mirrors setState diffs to Firestore and applies snapshots via setRemote. Phone numbers live only in private/{uid}, readable via firestore.rules once unlocks/{payer}_{member} is "unlocked"; keep firestore.rules in sync with any data change.
+- Lovable Cloud is the source of truth; src/lib/store.ts is the in-memory view and src/lib/cloud.ts mirrors setState diffs to Cloud tables and applies realtime refetches via setRemote. Phone numbers live only in private_phones, readable via RLS once the unlock "<payer>_<member>" is unlocked; keep RLS in sync with any data change.
 - New posts go through cloud.sharePost (waits for server confirmation, tracks state.unsent) and posts are also re-read from the server on resume/online/every 20s, because mobile networks can silently stall writes or the live stream and members would never see each other.
 - City catalogs are nested under settings in the prototype store, and home validates route choices against that catalog; this keeps admin entries and passenger/driver options consistent.
 - Admin city/location controls live in a dedicated AdminLocations component to keep catalog management separate from payment and CMS controls.
@@ -46,6 +46,9 @@ use the editor.
 - PartnerMarquee uses a duplicated, reduced-motion-aware track; the member tray scrolls only its navigation and stops automatic movement upon user interaction to preserve control accessibility.
 - NearbyOffersNavigation opens dedicated nearby routes for new same-route offers from live store updates; session receipts prevent reopening acknowledged screens, and reviews/payment/profile flows are not interrupted.
 - Home-screen installation stays manifest-only with a shared InstallAppPrompt using the browser's deferred install event or mobile menu instructions; never add app-shell caching or alter the separate messaging worker for installability.
-- Demo members are kept in settings.demoUsers (no phones) with phones in private/demo_{id}; the poster's client writes demo_ interest docs after the post is confirmed, so the existing unlock rule protects demo phones too.
+- Demo members are kept in settings.demoUsers (no phones) with phones in private_phones row demo_{id}; the poster's client writes demo_ interest docs after the post is confirmed, so the existing unlock rule protects demo phones too.
 - App-served images must be real files under src/assets (Vite-bundled) or public/, never Lovable CDN pointer imports, because the app is also deployed off Lovable where that CDN path is not served.
-- Members with hidePhone get a chat-kind unlock (chatFee) instead of a phone reveal; chats/{unlockId}/messages is gated in firestore.rules by that unlock, and private/{uid} stays unreadable for hidden members.
+- Members with hidePhone get a chat-kind unlock (chatFee) instead of a phone reveal; chat_messages for chat_id = unlock id is gated by RLS on that unlock, and the member's private_phones row stays unreadable for hidden members.
+
+- Admin is a user_roles 'admin' row (auto-granted to the admin email on signup), never a client-side credential check, because hardcoded passwords in the browser are public.
+- Firebase remains only for analytics and web push (Firebase Messaging); push tokens are stored in the Cloud push_tokens table.
