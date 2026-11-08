@@ -65,7 +65,7 @@ export async function confirmOtp(phone: string, code: string): Promise<"ok" | "w
 export async function loadOtpWhatsapp(): Promise<string> {
   const { db, fs } = await cloud();
   const s = await fs.getDoc(fs.doc(db, "settings", "otp"));
-  return (s.data()?.whatsapp as string) ?? "";
+  return (s.data()?.["whatsapp"] as string) ?? "";
 }
 
 // ---- admin side ----
@@ -75,7 +75,7 @@ export async function saveOtpWhatsapp(whatsapp: string) {
 }
 export async function loadPool(): Promise<OtpCode[]> {
   const { db, fs } = await cloud();
-  return ((await fs.getDoc(fs.doc(db, "otpPool", "main"))).data()?.codes as OtpCode[]) ?? [];
+  return ((await fs.getDoc(fs.doc(db, "otpPool", "main"))).data()?.["codes"] as OtpCode[]) ?? [];
 }
 export async function savePool(codes: OtpCode[]) {
   const { db, fs } = await cloud();
@@ -84,7 +84,7 @@ export async function savePool(codes: OtpCode[]) {
 export async function watchRequests(cb: (r: OtpRequest[]) => void) {
   const { db, fs } = await cloud();
   return fs.onSnapshot(fs.collection(db, "otpRequests"), (snap) =>
-    cb(snap.docs.map((d) => { const x = d.data(); return { id: d.id, phone: x.phone, status: x.status, attempts: x.attempts ?? 0, createdAt: ms(x.createdAt), sentAt: ms(x.sentAt) }; })
+    cb(snap.docs.map((d) => { const x = d.data() as { phone: string; status: OtpRequest["status"]; attempts?: number; createdAt?: unknown; sentAt?: unknown }; return { id: d.id, phone: x.phone, status: x.status, attempts: x.attempts ?? 0, createdAt: ms(x.createdAt), sentAt: ms(x.sentAt) }; })
       .sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))));
 }
 /** Picks a random unused code, remembers it for this number, marks it used. Returns the code. */
