@@ -1,0 +1,25 @@
+- [x] Add admin-managed cities and locations to the prototype store.
+- [x] Replace home From/To text fields with city-filtered dropdowns.
+- [x] Test admin entry, selection, and posting end-to-end.
+- [x] Remove departure time while preserving expiry countdown.
+- [x] Add searchable location selection popups.
+- [x] Update registration choices and optional vehicle/profile photos; test both flows.
+- [x] Make registration organization, department and address selections admin-controlled; verify admin-to-registration flow.
+- [x] Add searchable profile/catalog popups and save profile selections.
+- [x] Add owner cancellation for requests and rides; stop new contacts and matching.
+- [x] Add a pre-contact ratings/reviews screen and verify all flows.
+- [x] Increase payment/review button heights and add official payment logos with account copying.
+- [x] Replace Home mode buttons with animated features slider; add side-tray mode switching.
+- [x] Verify payment and both travel-mode flows.
+- [x] Simplify Home fields and replace compact slider photos.
+- [x] Optimize payment logos and add compressed admin media uploads.
+- [x] Add touch-paused menu scrolling and partner animation; verify flows.
+- [ ] Automatic newest-interest passenger screen — deferred alongside the earlier alerts request.
+- [ ] Matching-route bell, sound/vibration and secure Firebase web push — deferred at user's request; web push connection details missing.
+- [x] Verify live ride/request reception, pre-interest reviews and acknowledgement with two temporary Firebase accounts.
+- [x] Automatically open separate nearby offer screens for both travel modes and preserve acknowledgement/reviews.
+- [x] Remove daily, weekly and monthly fare controls from driver ride sharing.
+- [x] Elevate onboarding navigation and add carpool illustrations; verify all three screens on small phones.
+- [x] Adjust header logo spacing and single-line slogan; add and verify the below-slider searching animation.
+- [x] Add automatic browser install invitation and verify installed-mode suppression.
+- [x] Rebuild installed icons with the smaller official logo on black and verify manifest assets.
