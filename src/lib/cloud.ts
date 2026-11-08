@@ -36,6 +36,11 @@ export async function registerAccount(user: Omit<User, "id">): Promise<User> {
   return full;
 }
 
+export async function resetPassword(email: string) {
+  const { auth, fa } = await cloud();
+  await fa.sendPasswordResetEmail(auth, email.trim().toLowerCase());
+}
+
 export async function signIn(email: string, password: string) {
   const { auth, fa } = await cloud();
   const e = email.trim().toLowerCase();
