@@ -24,6 +24,19 @@ function Login() {
   const [err, setErr] = useState("");
   const nav = useNavigate();
   const [busy, setBusy] = useState(false);
+  const [info, setInfo] = useState("");
+  const forgot = async () => {
+    setErr(""); setInfo("");
+    if (!/^\S+@\S+\.\S+$/.test(email.trim())) return setErr("Enter your email above, then tap Forgot password");
+    try {
+      const { resetPassword } = await import("@/lib/cloud");
+      await resetPassword(email);
+      setInfo("Password reset link sent. Check your email inbox (and spam folder).");
+    } catch (x) {
+      const code = (x as { code?: string }).code;
+      setErr(code === "auth/user-not-found" ? "No account with this email" : code === "auth/too-many-requests" ? "Too many tries. Please wait a few minutes." : "Could not send reset link. Try again.");
+    }
+  };
   const go = async (e: React.FormEvent) => {
     e.preventDefault();
     setErr(""); setBusy(true);
@@ -42,9 +55,11 @@ function Login() {
       <div className="pb-4"><AuthLogo imgSize="h-24 w-24" textSize="text-6xl" animated /></div>
       <input className="field" type="email" autoCapitalize="none" autoCorrect="off" autoComplete="email" placeholder="Official email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <PasswordInput placeholder="Password" value={pass} onChange={(e) => setPass(e.target.value)} />
+      <button type="button" onClick={forgot} className="-mt-2 self-end text-sm font-semibold text-primary">Forgot password?</button>
       {err && <p className="font-semibold text-destructive">{err}</p>}
+      {info && <p className="font-semibold text-success">{info}</p>}
       <button className="btn-big" disabled={busy}>{busy ? "Logging in…" : "Login"}</button>
-      <Link to="/register" className="py-2 text-center font-bold text-primary">Create new account</Link>
+      <p className="py-2 text-center text-muted-foreground">Don't have an account? <Link to="/register" className="font-bold text-primary">Sign up</Link></p>
     </form>
   );
 }
