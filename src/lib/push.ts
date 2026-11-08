@@ -20,12 +20,10 @@ export async function enablePush(): Promise<PushResult> {
   const registration = await navigator.serviceWorker.register(`/firebase-messaging-sw.js?${new URLSearchParams(config).toString()}`);
   const token = await getToken(getMessaging(app), { vapidKey, serviceWorkerRegistration: registration });
   if (!token) return { status: "denied" };
-  const { cloud } = await import("./cloud");
-  const { auth, db, fs } = await cloud();
-  if (!auth.currentUser) throw new Error("Sign in before enabling notifications.");
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token));
   const id = Array.from(new Uint8Array(digest)).map((n) => n.toString(16).padStart(2, "0")).join("");
-  await fs.setDoc(fs.doc(db, "users", auth.currentUser.uid, "fcmTokens", id), { token, updatedAt: Date.now() });
+  const { savePushToken } = await import("./cloud");
+  await savePushToken(id, token);
   return { status: "registered", token };
 }
 
