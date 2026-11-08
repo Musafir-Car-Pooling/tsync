@@ -10,33 +10,180 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccountRouteImport } from './routes/account'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as NearbyRequestsRouteImport } from './routes/nearby-requests'
+import { Route as NearbyRidesRouteImport } from './routes/nearby-rides'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ChatIdRouteImport } from './routes/chat.$id'
+import { Route as InfoSlugRouteImport } from './routes/info.$slug'
+import { Route as PostIdRouteImport } from './routes/post.$id'
+import { Route as ReviewsPostIdInterestIdRouteImport } from './routes/reviews.$postId.$interestId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NearbyRequestsRoute = NearbyRequestsRouteImport.update({
+  id: '/nearby-requests',
+  path: '/nearby-requests',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NearbyRidesRoute = NearbyRidesRouteImport.update({
+  id: '/nearby-rides',
+  path: '/nearby-rides',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatIdRoute = ChatIdRouteImport.update({
+  id: '/chat/$id',
+  path: '/chat/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfoSlugRoute = InfoSlugRouteImport.update({
+  id: '/info/$slug',
+  path: '/info/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PostIdRoute = PostIdRouteImport.update({
+  id: '/post/$id',
+  path: '/post/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsPostIdInterestIdRoute = ReviewsPostIdInterestIdRouteImport.update({
+  id: '/reviews/$postId/$interestId',
+  path: '/reviews/$postId/$interestId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
+  '/admin': typeof AdminRoute
+  '/login': typeof LoginRoute
+  '/messages': typeof MessagesRoute
+  '/nearby-requests': typeof NearbyRequestsRoute
+  '/nearby-rides': typeof NearbyRidesRoute
+  '/register': typeof RegisterRoute
+  '/chat/$id': typeof ChatIdRoute
+  '/info/$slug': typeof InfoSlugRoute
+  '/post/$id': typeof PostIdRoute
+  '/reviews/$postId/$interestId': typeof ReviewsPostIdInterestIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
+  '/admin': typeof AdminRoute
+  '/login': typeof LoginRoute
+  '/messages': typeof MessagesRoute
+  '/nearby-requests': typeof NearbyRequestsRoute
+  '/nearby-rides': typeof NearbyRidesRoute
+  '/register': typeof RegisterRoute
+  '/chat/$id': typeof ChatIdRoute
+  '/info/$slug': typeof InfoSlugRoute
+  '/post/$id': typeof PostIdRoute
+  '/reviews/$postId/$interestId': typeof ReviewsPostIdInterestIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
+  '/admin': typeof AdminRoute
+  '/login': typeof LoginRoute
+  '/messages': typeof MessagesRoute
+  '/nearby-requests': typeof NearbyRequestsRoute
+  '/nearby-rides': typeof NearbyRidesRoute
+  '/register': typeof RegisterRoute
+  '/chat/$id': typeof ChatIdRoute
+  '/info/$slug': typeof InfoSlugRoute
+  '/post/$id': typeof PostIdRoute
+  '/reviews/$postId/$interestId': typeof ReviewsPostIdInterestIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/account'
+    | '/admin'
+    | '/login'
+    | '/messages'
+    | '/nearby-requests'
+    | '/nearby-rides'
+    | '/register'
+    | '/chat/$id'
+    | '/info/$slug'
+    | '/post/$id'
+    | '/reviews/$postId/$interestId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/account'
+    | '/admin'
+    | '/login'
+    | '/messages'
+    | '/nearby-requests'
+    | '/nearby-rides'
+    | '/register'
+    | '/chat/$id'
+    | '/info/$slug'
+    | '/post/$id'
+    | '/reviews/$postId/$interestId'
+  id:
+    | '__root__'
+    | '/'
+    | '/account'
+    | '/admin'
+    | '/login'
+    | '/messages'
+    | '/nearby-requests'
+    | '/nearby-rides'
+    | '/register'
+    | '/chat/$id'
+    | '/info/$slug'
+    | '/post/$id'
+    | '/reviews/$postId/$interestId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountRoute: typeof AccountRoute
+  AdminRoute: typeof AdminRoute
+  LoginRoute: typeof LoginRoute
+  MessagesRoute: typeof MessagesRoute
+  NearbyRequestsRoute: typeof NearbyRequestsRoute
+  NearbyRidesRoute: typeof NearbyRidesRoute
+  RegisterRoute: typeof RegisterRoute
+  ChatIdRoute: typeof ChatIdRoute
+  InfoSlugRoute: typeof InfoSlugRoute
+  PostIdRoute: typeof PostIdRoute
+  ReviewsPostIdInterestIdRoute: typeof ReviewsPostIdInterestIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +195,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nearby-requests': {
+      id: '/nearby-requests'
+      path: '/nearby-requests'
+      fullPath: '/nearby-requests'
+      preLoaderRoute: typeof NearbyRequestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nearby-rides': {
+      id: '/nearby-rides'
+      path: '/nearby-rides'
+      fullPath: '/nearby-rides'
+      preLoaderRoute: typeof NearbyRidesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat/$id': {
+      id: '/chat/$id'
+      path: '/chat/$id'
+      fullPath: '/chat/$id'
+      preLoaderRoute: typeof ChatIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/info/$slug': {
+      id: '/info/$slug'
+      path: '/info/$slug'
+      fullPath: '/info/$slug'
+      preLoaderRoute: typeof InfoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/post/$id': {
+      id: '/post/$id'
+      path: '/post/$id'
+      fullPath: '/post/$id'
+      preLoaderRoute: typeof PostIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews/$postId/$interestId': {
+      id: '/reviews/$postId/$interestId'
+      path: '/reviews/$postId/$interestId'
+      fullPath: '/reviews/$postId/$interestId'
+      preLoaderRoute: typeof ReviewsPostIdInterestIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountRoute: AccountRoute,
+  AdminRoute: AdminRoute,
+  LoginRoute: LoginRoute,
+  MessagesRoute: MessagesRoute,
+  NearbyRequestsRoute: NearbyRequestsRoute,
+  NearbyRidesRoute: NearbyRidesRoute,
+  RegisterRoute: RegisterRoute,
+  ChatIdRoute: ChatIdRoute,
+  InfoSlugRoute: InfoSlugRoute,
+  PostIdRoute: PostIdRoute,
+  ReviewsPostIdInterestIdRoute: ReviewsPostIdInterestIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
