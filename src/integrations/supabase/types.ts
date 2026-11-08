@@ -166,6 +166,27 @@ export type Database = {
         }
         Relationships: []
       }
+      push_tokens: {
+        Row: {
+          id: string
+          token: string
+          updated_at: number
+          user_id: string
+        }
+        Insert: {
+          id: string
+          token: string
+          updated_at: number
+          user_id: string
+        }
+        Update: {
+          id?: string
+          token?: string
+          updated_at?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           data: Json
