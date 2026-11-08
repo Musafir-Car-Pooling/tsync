@@ -14,16 +14,266 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      app_settings: {
+        Row: {
+          data: Json
+          id: string
+        }
+        Insert: {
+          data?: Json
+          id: string
+        }
+        Update: {
+          data?: Json
+          id?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          at: number
+          chat_id: string
+          delivered_at: number | null
+          from_id: string
+          id: string
+          read_at: number | null
+          text: string
+        }
+        Insert: {
+          at: number
+          chat_id: string
+          delivered_at?: number | null
+          from_id: string
+          id?: string
+          read_at?: number | null
+          text: string
+        }
+        Update: {
+          at?: number
+          chat_id?: string
+          delivered_at?: number | null
+          from_id?: string
+          id?: string
+          read_at?: number | null
+          text?: string
+        }
+        Relationships: []
+      }
+      companies: {
+        Row: {
+          data: Json
+          id: string
+        }
+        Insert: {
+          data?: Json
+          id: string
+        }
+        Update: {
+          data?: Json
+          id?: string
+        }
+        Relationships: []
+      }
+      interests: {
+        Row: {
+          data: Json
+          id: string
+          post_id: string
+        }
+        Insert: {
+          data?: Json
+          id: string
+          post_id: string
+        }
+        Update: {
+          data?: Json
+          id?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interests_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          active: boolean
+          created_at: string
+          data: Json
+          id: string
+          owner_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          data?: Json
+          id: string
+          owner_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          data?: Json
+          id?: string
+          owner_id?: string
+        }
+        Relationships: []
+      }
+      private_phones: {
+        Row: {
+          id: string
+          phone: string
+        }
+        Insert: {
+          id: string
+          phone?: string
+        }
+        Update: {
+          id?: string
+          phone?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          active: boolean
+          created_at: string
+          data: Json
+          hide_phone: boolean
+          id: string
+          verified: boolean
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          data?: Json
+          hide_phone?: boolean
+          id: string
+          verified?: boolean
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          data?: Json
+          hide_phone?: boolean
+          id?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          data: Json
+          id: string
+          rating: number
+          reviewer_id: string
+          target_id: string
+          text: string
+        }
+        Insert: {
+          data?: Json
+          id: string
+          rating: number
+          reviewer_id: string
+          target_id: string
+          text?: string
+        }
+        Update: {
+          data?: Json
+          id?: string
+          rating?: number
+          reviewer_id?: string
+          target_id?: string
+          text?: string
+        }
+        Relationships: []
+      }
+      unlocks: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          interest_id: string
+          kind: string
+          post_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          id: string
+          interest_id: string
+          kind?: string
+          post_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          interest_id?: string
+          kind?: string
+          post_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      chat_member: { Args: { _cid: string }; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_unlocked: { Args: { _a: string; _b: string }; Returns: boolean }
+      post_active: { Args: { _pid: string }; Returns: boolean }
+      post_owner: { Args: { _pid: string }; Returns: string }
+      setting_flag: { Args: { _key: string }; Returns: boolean }
+      valid_pay_proof: {
+        Args: {
+          _id: string
+          _interest: string
+          _post: string
+          _status: string
+          _user: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +400,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

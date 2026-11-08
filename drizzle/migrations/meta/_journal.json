@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794163350015,
+      "tag": "0000_travelsync_schema",
+      "breakpoints": true
+    }
+  ]
 }
