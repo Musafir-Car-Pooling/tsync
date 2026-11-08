@@ -1,0 +1,13 @@
+[
+  {"capability":"code, pages, assets","source":"TanStack Start app","outcome":"migrate","status":"done","next_action":"none"},
+  {"capability":"schema","source":"Firestore collections","outcome":"migrate","status":"done","next_action":"none"},
+  {"capability":"records","source":"Firestore","outcome":"migrate","status":"pending","next_action":"user exports Firestore collections as JSON"},
+  {"capability":"auth identities","source":"Firebase Auth","outcome":"migrate","status":"pending","next_action":"user exports Firebase Auth users (UID + email)"},
+  {"capability":"authorization","source":"firestore.rules","outcome":"migrate to row-level rules","status":"done","next_action":"verify with real signed-in members"},
+  {"capability":"admin access","source":"hardcoded admin email/password","outcome":"admin role auto-granted to admin email","status":"done","next_action":"admin confirms pp@gmail.com via email link"},
+  {"capability":"uploaded files","source":"images stored inline as compressed data","outcome":"kept in records","status":"pending","next_action":"comes with records export"},
+  {"capability":"web push","source":"Firebase Messaging","outcome":"preserve","status":"preserved","next_action":"token now saved in Cloud; delivery still needs server setup as before"},
+  {"capability":"analytics","source":"Firebase Analytics","outcome":"preserve","status":"preserved","next_action":"none"},
+  {"capability":"hosting","source":"Netlify","outcome":"cutover to Lovable publish","status":"pending","next_action":"publish"},
+  {"capability":"verification","source":"-","outcome":"-","status":"partial","next_action":"pages load and read settings from Cloud; signed-in flows untested"}
+]
