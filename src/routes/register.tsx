@@ -35,7 +35,6 @@ function Register() {
   const [otp, setOtp] = useState("");
   const [verified, setVerified] = useState(false);
   const [phoneOtpSent, setPhoneOtpSent] = useState(false);
-  const [otpWa, setOtpWa] = useState("");
   const [phoneBusy, setPhoneBusy] = useState(false);
   const [phoneOtp, setPhoneOtp] = useState("");
   const [phoneVerified, setPhoneVerified] = useState(false);
@@ -64,7 +63,6 @@ function Register() {
       const otp = await import("@/lib/otp");
       if (await otp.isPhoneVerified(f.phone)) { setPhoneVerified(true); return; }
       await otp.requestOtp(f.phone);
-      setOtpWa(await otp.loadOtpWhatsapp().catch(() => ""));
       setPhoneOtpSent(true); setPhoneOtp("");
     } catch { setErr("Could not request a code. Check your internet and try again."); }
     finally { setPhoneBusy(false); }
@@ -157,7 +155,7 @@ function Register() {
       </div>
       {phoneOtpSent && !phoneVerified && (
         <div className="card-box space-y-2 p-3">
-          <p className="text-sm text-muted-foreground">Check your WhatsApp and enter 6 digit code{otpWa ? <> (from <b className="text-foreground">{otpWa}</b>)</> : null}.</p>
+          <p className="text-sm text-muted-foreground">Check your WhatsApp and enter 6 digit code.</p>
           <div className="flex gap-2"><input className="field" inputMode="numeric" maxLength={6} placeholder="6 digit code" value={phoneOtp} onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, ""))} />
             <Button type="button" disabled={phoneBusy} onClick={confirmPhoneOtp} className="h-auto shrink-0 px-4 font-bold">Confirm</Button></div>
         </div>
