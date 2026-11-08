@@ -89,7 +89,7 @@ export function hydrateStore() {
   } catch { /* ignore */ }
 }
 function emit() { listeners.forEach((l) => l()); }
-// Local change made by the user: synced to Firebase by the write hook.
+// Local change made by the user: synced to Lovable Cloud by the write hook.
 export function setState(fn: (s: State) => State) {
   const prev = state;
   state = fn(state);
@@ -97,7 +97,7 @@ export function setState(fn: (s: State) => State) {
   if (writeHook && prev !== state) writeHook(prev, state);
   emit();
 }
-// Change that came from Firebase: never written back.
+// Change that came from Lovable Cloud: never written back.
 export function setRemote(fn: (s: State) => State) { state = fn(state); emit(); }
 export function getState() { return state; }
 export function switchTravelMode(s: State): State {
