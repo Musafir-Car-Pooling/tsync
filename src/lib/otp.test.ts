@@ -14,7 +14,7 @@ describe("whatsapp otp", () => {
     expect(pickCode(markUsed(codes, "222222"))).toBeUndefined();
   });
   it("codes expire after 15 minutes", () => {
-    expect(otpExpired(0, 14 * 60 * 1000)).toBe(false);
+    expect(otpExpired(1, 14 * 60 * 1000)).toBe(false);
     expect(otpExpired(1, 15 * 60 * 1000 + 2)).toBe(true);
   });
   it("allows 5 attempts", () => {
