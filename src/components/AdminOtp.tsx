@@ -42,14 +42,14 @@ export function AdminOtp() {
           <input className="field" placeholder="03xx-xxxxxxx" value={wa} onChange={(e) => setWa(e.target.value)} />
           <Button type="button" onClick={() => saveOtpWhatsapp(wa).then(() => setMsg("Saved")).catch(() => setMsg("Could not save"))} className="h-auto shrink-0 px-4">Save</Button>
         </div>
-        <p className="text-sm text-muted-foreground">Users are told their code comes from this number. Open the admin panel on this phone to send codes.</p>
+        <p className="text-sm text-muted-foreground">Open the admin panel on this phone to send codes.</p>
       </section>
 
       <section className="card-box space-y-2 p-4">
         <h3 className="font-display text-xl">Codes list</h3>
         <p className="text-sm">{codes.length} codes · <b>{free}</b> unused · {codes.length - free} used</p>
         <div className="flex flex-wrap gap-2">
-          <Button type="button" onClick={async () => { if (codes.length && !confirm("Replace the current codes with 100 new ones?")) return; const c = generateCodes(); await savePool(c).then(() => setCodes(c)).catch(() => setMsg("Could not save codes")); }}>Generate 100 codes</Button>
+          <Button type="button" onClick={async () => { const c = generateCodes(); setMsg("Saving…"); await savePool(c).then(() => { setCodes(c); setShowCodes(true); setMsg("100 new codes saved"); }).catch((e: { code?: string }) => setMsg(e.code === "permission-denied" ? "Firebase blocked saving. Publish the new Firestore rules in the Firebase console, then sign in again as admin." : "Could not save codes")); }}>Generate 100 codes</Button>
           <Button type="button" variant="secondary" onClick={() => setShowCodes(!showCodes)}>{showCodes ? "Hide" : "Show"} codes</Button>
         </div>
         {showCodes && <div className="grid grid-cols-4 gap-1 text-sm tabular-nums">{codes.map((c) => <span key={c.code} className={c.used ? "text-muted-foreground line-through" : ""}>{c.code}</span>)}</div>}
