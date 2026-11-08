@@ -49,3 +49,4 @@ use the editor.
 - App-served images must be real files under src/assets (Vite-bundled) or public/, never Lovable CDN pointer imports, because the app is also deployed off Lovable where that CDN path is not served.
 - Members with hidePhone get a chat-kind unlock (chatFee) instead of a phone reveal; chats/{unlockId}/messages is gated in firestore.rules by that unlock, and private/{uid} stays unreadable for hidden members.
 - Firebase (Auth + Firestore) is the app's only backend at the owner's request; Lovable Cloud is attached but unused, so do not move data into it.
+- Phone OTP is admin-sent via WhatsApp: codes live in admin-only otpSecrets/otpPool and firestore.rules compare the user's guess against the secret, so codes never reach users' browsers.
