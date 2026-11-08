@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { MediaUpload } from "@/components/MediaUpload";
 import easypaisaIcon from "@/assets/easypaisa-compact.png";
 import jazzcashIcon from "@/assets/jazzcash-compact.png";
-import { useStore, setState, formatPKR, compressImage, uid, type Settings } from "@/lib/store";
+import { useStore, setState, isAdminCreds, formatPKR, compressImage, uid, type Settings } from "@/lib/store";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -58,7 +58,7 @@ function Admin() {
 function AdminLogin() {
   const [e, setE] = useState(""); const [p, setP] = useState(""); const [err, setErr] = useState("");
   return (
-    <form onSubmit={async (ev) => { ev.preventDefault(); try { const { adminSignIn } = await import("@/lib/cloud"); const r = await adminSignIn(e, p); if (r === "confirm") setErr("Check the admin inbox for a confirmation link, then sign in again."); } catch { setErr("Wrong email or password"); } }} className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-4 px-6">
+    <form onSubmit={async (ev) => { ev.preventDefault(); if (!isAdminCreds(e, p)) return setErr("Wrong email or password"); try { const { signIn } = await import("@/lib/cloud"); await signIn(e, p); } catch { setErr("Could not sign in. Check that Email/Password sign-in is enabled in Firebase."); } }} className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-4 px-6">
       <div className="pb-4"><AuthLogo imgSize="h-24 w-24" textSize="text-6xl" animated /></div>
       <input className="field" type="email" autoCapitalize="none" autoCorrect="off" autoComplete="email" placeholder="Official email" value={e} onChange={(x) => setE(x.target.value)} />
       <PasswordInput placeholder="Password" value={p} onChange={(x) => setP(x.target.value)} />

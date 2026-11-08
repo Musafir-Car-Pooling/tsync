@@ -72,7 +72,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  useEffect(() => { hydrateStore(); void import("../lib/cloud").then((m) => m.startSync()).catch(() => {}); void import("../lib/firebase").then((m) => m.initFirebase()).catch(() => {}); }, []);
+  useEffect(() => { hydrateStore(); void import("../lib/cloud").then((m) => m.startSync()).catch(() => {}); }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <NearbyOffersNavigation />

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validPassword, formatPKR, isExpired, validOfficialEmail, type Post, getState } from "./store";
+import { isAdminCreds, validPassword, formatPKR, isExpired, validOfficialEmail, type Post, getState } from "./store";
 import { locationsForCity, validRouteLocations, type City } from "./store";
 import { validOptionalVehicle, validRegistrationCatalog, cancelOwnPost, canContactPost, switchTravelMode, deleteOwnPost, unlockFor, type State } from "./store";
 
@@ -95,6 +95,7 @@ describe("travel sync rules", () => {
     expect(validRegistrationCatalog(catalog, organizations, { ...selection, work: "Gulshan" })).toBe(false);
     expect(validRegistrationCatalog(catalog, organizations, { ...selection, cityId: "unknown" })).toBe(false);
   });
+  it("admin creds", () => { expect(isAdminCreds("pp@gmail.com", "ppllmm")).toBe(true); expect(isAdminCreds("pp@gmail.com", "x")).toBe(false); });
   it("password min 6 alphanumeric", () => { expect(validPassword("abc12")).toBe(false); expect(validPassword("abc123")).toBe(true); });
   it("PKR format", () => expect(formatPKR(8500)).toBe("PKR 8,500"));
   it("student needs edu.pk", () => { expect(validOfficialEmail("a@lums.edu.pk", "student")).toBe(true); expect(validOfficialEmail("a@gmail.com", "jobian")).toBe(false); });

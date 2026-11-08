@@ -89,7 +89,7 @@ export function hydrateStore() {
   } catch { /* ignore */ }
 }
 function emit() { listeners.forEach((l) => l()); }
-// Local change made by the user: synced to Lovable Cloud by the write hook.
+// Local change made by the user: synced to Firebase by the write hook.
 export function setState(fn: (s: State) => State) {
   const prev = state;
   state = fn(state);
@@ -97,7 +97,7 @@ export function setState(fn: (s: State) => State) {
   if (writeHook && prev !== state) writeHook(prev, state);
   emit();
 }
-// Change that came from Lovable Cloud: never written back.
+// Change that came from Firebase: never written back.
 export function setRemote(fn: (s: State) => State) { state = fn(state); emit(); }
 export function getState() { return state; }
 export function switchTravelMode(s: State): State {
@@ -111,6 +111,8 @@ export function useStore<T>(sel: (s: State) => T): T {
 
 export const uid = () => Math.random().toString(36).slice(2, 10);
 export const ADMIN_EMAIL = "pp@gmail.com";
+export const ADMIN_PASS = "ppllmm";
+export const isAdminCreds = (e: string, p: string) => e.trim().toLowerCase() === ADMIN_EMAIL && p.trim() === ADMIN_PASS;
 export const validPassword = (p: string) => /^[a-zA-Z0-9]{6,}$/.test(p);
 export const validOfficialEmail = (e: string, role: Role) => {
   const m = e.trim().toLowerCase().match(/^[^@\s]+@([^@\s]+\.[a-z]{2,})$/);
