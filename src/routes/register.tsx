@@ -76,12 +76,11 @@ function Register() {
     setBusy(true); setErr("");
     try {
       const { registerAccount } = await import("@/lib/cloud");
-      const res = await registerAccount(user);
-      if (res === "confirm") { setErr("Account created. Check your email and tap the confirmation link, then sign in."); return; }
+      await registerAccount(user);
       nav({ to: "/" });
     } catch (x) {
       const code = (x as { code?: string }).code;
-      setErr(code === "email-in-use" ? "Email already registered" : "Could not create account. Please try again.");
+      setErr(code === "auth/email-already-in-use" ? "Email already registered" : "Could not create account. Please try again.");
     } finally { setBusy(false); }
   };
   const uploadPhoto = async (file: File | undefined, setPhoto: (photo: string) => void) => {
