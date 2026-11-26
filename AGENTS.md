@@ -49,3 +49,4 @@ use the editor.
 - App-served images must be real files under src/assets (Vite-bundled) or public/, never Lovable CDN pointer imports, because the app is also deployed off Lovable where that CDN path is not served.
 - Members with hidePhone get a chat-kind unlock (chatFee) instead of a phone reveal; chats/{unlockId}/messages is gated in firestore.rules by that unlock, and private/{uid} stays unreadable for hidden members.
 - Firebase (Auth + Firestore) is the app's only backend at the owner's request; Lovable Cloud is attached but unused, so do not move data into it.
+- Netlify deployments use netlify.toml with NITRO_PRESET=netlify and publish=dist; Nitro's Netlify adapter emits static assets there and server functions under .netlify, while Lovable retains its own build target.
