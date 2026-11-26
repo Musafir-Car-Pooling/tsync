@@ -34,8 +34,7 @@ function Register() {
   const [otpSent, setOtpSent] = useState<string>();
   const [otp, setOtp] = useState("");
   const [verified, setVerified] = useState(false);
-  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
-  const [phoneBusy, setPhoneBusy] = useState(false);
+  const [phoneOtpSent, setPhoneOtpSent] = useState<string>();
   const [phoneOtp, setPhoneOtp] = useState("");
   const [phoneVerified, setPhoneVerified] = useState(false);
   const [hidePhone, setHidePhone] = useState(false);
@@ -56,27 +55,9 @@ function Register() {
     if (!validOfficialEmail(f.email, role)) return setErr(role === "student" ? "Use your university @edu.pk email" : "Use your official company email (not Gmail/Yahoo)");
     setErr(""); setOtpSent(String(Math.floor(100000 + Math.random() * 900000)));
   };
-  const sendPhoneOtp = async () => {
+  const sendPhoneOtp = () => {
     if (!/^03\d{2}-?\d{7}$/.test(f.phone.trim())) return setErr("Enter a valid mobile number (03xx-xxxxxxx)");
-    setErr(""); setPhoneBusy(true);
-    try {
-      const otp = await import("@/lib/otp");
-      if (await otp.isPhoneVerified(f.phone)) { setPhoneVerified(true); return; }
-      await otp.requestOtp(f.phone);
-      setPhoneOtpSent(true); setPhoneOtp("");
-    } catch { setErr("Could not request a code. Check your internet and try again."); }
-    finally { setPhoneBusy(false); }
-  };
-  const confirmPhoneOtp = async () => {
-    if (!/^\d{6}$/.test(phoneOtp.trim())) return setErr("Enter the 6 digit code");
-    setPhoneBusy(true);
-    try {
-      const { confirmOtp } = await import("@/lib/otp");
-      const r = await confirmOtp(f.phone, phoneOtp);
-      if (r === "ok") { setPhoneVerified(true); setErr(""); }
-      else setErr(r === "wrong" ? "Code ghalat hai" : r === "expired" ? "Code expired. Tap Verify again for a new code." : r === "locked" ? "Too many wrong tries. Tap Verify again for a new code." : "Code not sent yet. Please wait for the WhatsApp message.");
-    } catch { setErr("Could not check the code. Try again."); }
-    finally { setPhoneBusy(false); }
+    setErr(""); setPhoneOtpSent(String(Math.floor(100000 + Math.random() * 900000)));
   };
   const [busy, setBusy] = useState(false);
   const submit = async (e: React.FormEvent) => {
@@ -87,8 +68,7 @@ function Register() {
     if (req.some((k) => !f[k].trim())) return setErr("Please fill all required fields");
     if (!city || !validRegistrationCatalog(getState().settings, getState().companies, { cityId, org: f.org, dept: f.dept, role, home: f.home, work: f.work })) return setErr("Select a city, organization, department and addresses from the available lists.");
     if (!verified) return setErr("Verify your official email with OTP");
-    if (!phoneVerified) return setErr("Verify your mobile number with the WhatsApp code");
-    try { const { isPhoneVerified } = await import("@/lib/otp"); if (!(await isPhoneVerified(f.phone))) { setPhoneVerified(false); return setErr("Verify your mobile number with the WhatsApp code"); } } catch { return setErr("Could not confirm your mobile number. Try again."); }
+    if (!phoneVerified) return setErr("Verify your mobile number with OTP");
     if (!validPassword(f.password)) return setErr("Password: minimum 6 letters/numbers only");
     if (travelMode === "driver" && !validOptionalVehicle(f)) return setErr("Number plate format looks invalid (e.g. LEA-1234)");
     const email = f.email.trim().toLowerCase();
@@ -150,14 +130,14 @@ function Register() {
       )}
       {verified && <p className="flex items-center gap-2 font-semibold text-success"><BadgeCheck />Verified Official Email</p>}
       <div className="flex gap-2">
-        <input className="field" placeholder="Phone (03xx-xxxxxxx)" value={f.phone} onChange={(e) => { up("phone")(e); setPhoneVerified(false); setPhoneOtpSent(false); }} />
-        {!phoneVerified && <Button type="button" variant="secondary" disabled={phoneBusy} onClick={sendPhoneOtp} className="h-auto shrink-0 px-4 font-bold text-primary">Verify</Button>}
+        <input className="field" placeholder="Phone (03xx-xxxxxxx)" value={f.phone} onChange={(e) => { up("phone")(e); setPhoneVerified(false); }} />
+        <Button type="button" variant="secondary" onClick={sendPhoneOtp} className="h-auto shrink-0 px-4 font-bold text-primary">OTP</Button>
       </div>
       {phoneOtpSent && !phoneVerified && (
         <div className="card-box space-y-2 p-3">
-          <p className="text-sm text-muted-foreground">Check your WhatsApp and enter 6 digit code.</p>
-          <div className="flex gap-2"><input className="field" inputMode="numeric" maxLength={6} placeholder="6 digit code" value={phoneOtp} onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, ""))} />
-            <Button type="button" disabled={phoneBusy} onClick={confirmPhoneOtp} className="h-auto shrink-0 px-4 font-bold">Confirm</Button></div>
+          <p className="text-sm text-muted-foreground">Demo OTP sent to your mobile: <b className="text-foreground">{phoneOtpSent}</b></p>
+          <div className="flex gap-2"><input className="field" placeholder="Enter mobile OTP" value={phoneOtp} onChange={(e) => setPhoneOtp(e.target.value)} />
+            <Button type="button" onClick={() => (phoneOtp === phoneOtpSent ? (setPhoneVerified(true), setErr("")) : setErr("Wrong mobile OTP"))} className="h-auto shrink-0 px-4 font-bold">Verify</Button></div>
         </div>
       )}
       {phoneVerified && <p className="flex items-center gap-2 font-semibold text-success"><BadgeCheck />Verified Mobile Number</p>}

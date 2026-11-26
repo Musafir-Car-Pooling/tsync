@@ -6,7 +6,6 @@ import { Logo, AuthLogo } from "@/components/AppShell";
 import { AdminLocations } from "@/components/AdminLocations";
 import { AdminDemoUsers } from "@/components/AdminDemoUsers";
 import { AdminDepartments } from "@/components/AdminDepartments";
-import { AdminOtp } from "@/components/AdminOtp";
 import { Button } from "@/components/ui/button";
 import { MediaUpload } from "@/components/MediaUpload";
 import easypaisaIcon from "@/assets/easypaisa-compact.png";
@@ -28,7 +27,7 @@ export const Route = createFileRoute("/admin")({
   component: Admin,
 });
 
-const TABS = ["Settings", "Locations", "Payments", "CMS", "Users", "Rides", "Companies", "Departments", "Phone Verification"] as const;
+const TABS = ["Settings", "Locations", "Payments", "CMS", "Users", "Rides", "Companies", "Departments"] as const;
 
 function Admin() {
   const admin = useStore((s) => s.admin);
@@ -51,7 +50,6 @@ function Admin() {
         {tab === "Rides" && <Rides />}
         {tab === "Companies" && <Companies />}
         {tab === "Departments" && <AdminDepartments />}
-        {tab === "Phone Verification" && <AdminOtp />}
       </div>
     </div>
   );
